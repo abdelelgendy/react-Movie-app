@@ -14,14 +14,15 @@ const API_OPTIONS ={
 }
 
 const App = () => {
-
-
-
 const [searchTerm, setSearchTerm] = useState('')
-
 const [errorMessage, setErrorMessage] =useState('')
+const [movieList,setMovieList] = useState([])
+const [isLoading,setIsLoading] =useState(false)
 
 const fetchMovies = async () => {
+
+  setIsLoading(true);
+  setErrorMessage('');
   try {
     if (!API_KEY || API_KEY === 'your_api_key_here') {
       throw new Error('TMDB API key is missing. Please add your API key to the .env file');
@@ -33,16 +34,23 @@ const fetchMovies = async () => {
       throw new Error(`Failed to fetch movies: ${response.status} ${response.statusText}`);
     }
     const data = await response.json();
-    console.log(data);
+    if (data.response === 'False'){
+      setErrorMessage(data.Error ||   'failed to fetch movies')
+      setMovieList([]);
+      return;
+    }
+    setMovieList(data.results || []);
   } catch (error) {
     console.log(`Error fetching movies: ${error}`);
     setErrorMessage(`Error fetching movies: ${error.message}`);
+  }finally{
+    setIsLoading(false);
   }
 };
 
 useEffect(() => {
   fetchMovies();
-}, []); // Add empty dependency array to prevent infinite loop
+}, []); 
 
   return (
     <main>
@@ -55,7 +63,17 @@ useEffect(() => {
         </header>
         <section className="all-movies">
           <h2>All Movies</h2>
-          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+          {isLoading ? (
+            <p className="text-white">Loading...</p>
+          ):errorMessage?(
+            <p className="text-red-500">{errorMessage}</p>
+          ):(
+            <ul>
+              {movieList.map((movie) => (
+                <p className="text-white">{movie.title}</p>
+              ))}
+            </ul>
+          )}
         </section>
 
       </div>
