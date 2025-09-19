@@ -51,6 +51,32 @@
 @layer components {
   .pattern {
     @apply bg-hero-pattern w-full h-screen bg-center bg-cover absolute z-0;
+    /* Add gradient overlay to fade seamlessly with background */
+    background-image: 
+      linear-gradient(to bottom, 
+        transparent 0%, 
+        transparent 30%, 
+        rgba(3, 0, 20, 0.3) 50%,
+        rgba(3, 0, 20, 0.7) 75%, 
+        #030014 100%
+      ),
+      url("/hero-bg.png");
+  }
+  
+  /* Alternative: Add additional fade effect with pseudo-element */
+  .pattern::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(to bottom, 
+      transparent 0%, 
+      rgba(3, 0, 20, 0.5) 50%,
+      #030014 100%
+    );
+    pointer-events: none;
   }
 
   .wrapper {
