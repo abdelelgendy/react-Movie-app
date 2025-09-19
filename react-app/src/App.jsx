@@ -9,8 +9,7 @@ const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const API_OPTIONS ={
   method:'GET',
   headers:{
-    accept:'application/json',
-    Authorization:`Bearer ${API_KEY}`
+    accept:'application/json'
   }
 }
 
@@ -29,7 +28,7 @@ const fetchMovies = async () => {
       throw new Error('TMDB API key is missing. Please add your API key to the .env file');
     }
     
-    const endpoint = `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+    const endpoint = `${API_BASE_URL}/discover/movie?api_key=${API_KEY}&sort_by=popularity.desc`;
     const response = await fetch(endpoint, API_OPTIONS);
     if (!response.ok) {
       throw new Error(`Failed to fetch movies: ${response.status} ${response.statusText}`);
