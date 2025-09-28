@@ -28,8 +28,14 @@ const fetchMovies = async () => {
       throw new Error('TMDB API key is missing. Please add your API key to the .env file');
     }
     
-    const endpoint = `${API_BASE_URL}/discover/movie?api_key=${API_KEY}&sort_by=popularity.desc`;
-    const response = await fetch(endpoint, API_OPTIONS);
+    const endpoint = `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+    const response = await fetch(endpoint, {
+      ...API_OPTIONS,
+      headers: {
+        ...API_OPTIONS.headers,
+        Authorization: `Bearer ${API_KEY}`,
+      },
+    });
     if (!response.ok) {
       throw new Error(`Failed to fetch movies: ${response.status} ${response.statusText}`);
     }
