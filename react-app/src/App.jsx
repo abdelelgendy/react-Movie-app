@@ -63,7 +63,7 @@ const fetchMovies = async (query='') => {
 useEffect(() => {
   fetchMovies(debouncedSearchTerm);
 }, [debouncedSearchTerm]); 
-
+ 
   return (
     <main>
       <div className="pattern"/>
