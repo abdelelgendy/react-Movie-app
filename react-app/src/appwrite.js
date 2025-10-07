@@ -29,7 +29,8 @@ export const updateSearchCount = async (searchTerm, movie)=>{
                 searchTerm,
                 count: 1,
                 movie_id: movie.id,
-                poster_url: `https://image.tmbd.org/t/p/w500${movie.poster_path}`,
+                poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+                title: movie.title,
             })
         }
     }catch (error){
@@ -39,4 +40,16 @@ export const updateSearchCount = async (searchTerm, movie)=>{
     // else create new search term and couunt for term
 
 
+}
+
+export const getTrendingMovies = async ()=>{
+    try{
+        const result = await databse.listDocuments(DATABASE_ID, COLLECTION_ID, [
+            Query.limit(5),
+            Query.orderDesc("count")
+        ]);
+        return result.documents;
+    } catch (error) {
+        console.log(error);
+    }
 }
